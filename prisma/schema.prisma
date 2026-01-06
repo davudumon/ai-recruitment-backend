@@ -16,7 +16,7 @@ datasource db {
 
 
 model User {
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
   password  String
@@ -26,18 +26,19 @@ model User {
 }
 
 model Job {
-  id          String   @id @default(uuid())
+  id          Int      @id @default(autoincrement())
   title       String
   description String
   location    String?
   isActive    Boolean  @default(true)
+  required_skills Json
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Candidate {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   fullName  String
   email     String
   domicile  String?
