@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import * as fs from 'fs';
 import path from "path";
-import { PDFParse } from "pdf-parse";
 
 @Injectable()
 export class cvService {
@@ -16,12 +15,5 @@ export class cvService {
         fs.writeFileSync(filePath, file.buffer);
 
         return filePath
-    }
-
-    async extractTextFromPdf(filePath: string): Promise<string> {
-        const parser = new PDFParse({ url: filePath })
-        const result = await parser.getText()
-
-        return result.text
     }
 }
