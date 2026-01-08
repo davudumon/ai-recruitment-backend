@@ -14,35 +14,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Job {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  location    String?
-  isActive    Boolean  @default(true)
+  id              Int     @id @default(autoincrement())
+  title           String
+  description     String
+  location        String?
+  isActive        Boolean @default(true)
   required_skills Json
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  candidates Candidate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Candidate {
-  id        Int      @id @default(autoincrement())
-  fullName  String
-  email     String
-  domicile  String?
+  id                Int     @id @default(autoincrement())
+  fullName          String?
+  email             String?
+  skills            Json?
+  experienceSummary String? @db.Text
+  yearsOfExperience Int?
+
   cvUrl     String
+  rawCvText String? @db.LongText
+
+  aiSummary       String? @db.Text
+  matchScore      Float?
+  aiReasoning     String? @db.Text
+
+  jobId Int
+  job   Job @relation(fields: [jobId], references: [id])
 
   createdAt DateTime @default(now())
 }
