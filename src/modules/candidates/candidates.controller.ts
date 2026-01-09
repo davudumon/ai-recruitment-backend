@@ -18,6 +18,7 @@ import { CandidatesService } from './candidates.service';
 import { CreateCandidateDto } from './dto/create-candidates.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { application } from 'express';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('candidates')
 export class CandidatesController {
@@ -44,6 +45,10 @@ export class CandidatesController {
     }
 
     @Get()
+    @ApiQuery({ name: 'jobId', required: false, description: 'Filter pelamar berdasarkan ID Lowongan' })
+    @ApiQuery({ name: 'skill', required: false, description: 'Filter pelamar berdasarkan keterampilan' })
+    @ApiQuery({ name: 'minScore', required: false, description: 'Filter pelamar berdasarkan skor minimum' })
+
     async findAll(
         @Query('jobId') jobId?: number,
         @Query('minScore') minScore?: number,
