@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CandidateRepository } from './candidates.repository';
 import { CreateCandidateDto } from './dto/create-candidates.dto';
 import { AiService } from '../../common/services/ai.services';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { SupabaseService } from 'src/common/services/supabase.service';
+import { PrismaService } from '../../prisma/prisma.service';
+import { SupabaseService } from '../../common/services/supabase.service';
 
 @Injectable()
 export class CandidatesService {
