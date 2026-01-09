@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { AiAnalysisResult } from '../interfaces/ai-analysis-result.interface';
+import { AiAnalysisResult } from '../../modules/candidates/interfaces/ai-analysis-result.interface';
 import { GoogleGenAI } from '@google/genai';
 import * as fs from 'fs';
 

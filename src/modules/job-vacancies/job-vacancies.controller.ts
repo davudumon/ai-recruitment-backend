@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete, Query } from '@nestjs/common';
 import { JobVacanciesService } from './job-vacancies.service';
 import { CreateJobVacancyDto } from './dto/create-job-vacancy.dto';
 import { UpdateJobVacancyDto } from './dto/update-job-vacancy.dto';
@@ -13,8 +13,8 @@ export class JobVacanciesController {
     }
 
     @Get()
-    findAll() {
-        return this.service.findAll();
+    findAll(@Query('title') title?: string) {
+        return this.service.findAll({ title });
     }
 
     @Get(':id')

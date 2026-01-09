@@ -9,10 +9,15 @@ import {
     HttpStatus,
     UseInterceptors,
     UploadedFile,
+    Query,
+    ParseFilePipe,
+    MaxFileSizeValidator,
+    FileTypeValidator,
 } from '@nestjs/common';
 import { CandidatesService } from './candidates.service';
 import { CreateCandidateDto } from './dto/create-candidates.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { application } from 'express';
 
 @Controller('candidates')
 export class CandidatesController {
@@ -20,7 +25,15 @@ export class CandidatesController {
 
     @Post()
     @UseInterceptors(FileInterceptor('file'))
-    async create(@Body() dto: CreateCandidateDto, @UploadedFile() file: Express.Multer.File) {
+    async create(@Body() dto: CreateCandidateDto, @UploadedFile(
+        new ParseFilePipe({
+            validators: [
+                new MaxFileSizeValidator({ maxSize: 2 * 1024 * 1024 }), // Maximal CV File Size: 2MB
+                new FileTypeValidator({ fileType: 'application/pdf' })
+            ],
+        })
+    ) file: Express.Multer.File
+    ) {
         const data = await this.candidatesService.create(dto, file);
 
         return {
@@ -31,8 +44,12 @@ export class CandidatesController {
     }
 
     @Get()
-    async findAll() {
-        const data = await this.candidatesService.findAll();
+    async findAll(
+        @Query('jobId') jobId?: number,
+        @Query('minScore') minScore?: number,
+        @Query('skill') skill?: string
+    ) {
+        const data = await this.candidatesService.findAll({ jobId, minScore, skill });
 
         return {
             success: true,

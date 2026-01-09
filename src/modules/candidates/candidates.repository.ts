@@ -10,15 +10,25 @@ export class CandidateRepository {
         return this.prisma.candidate.create({ data });
     }
 
-    findAll() {
+    async findAll(filters: { jobId?: number; minScore?: number; skill?: string }) {
         return this.prisma.candidate.findMany({
-            include: {
-                job: true
+            where: {
+                ...(filters.jobId && { jobId: Number(filters.jobId) }),
+
+                ...(filters.minScore && {
+                    matchScore: { gte: Number(filters.minScore) }
+                }),
+
+                ...(filters.skill && {
+                    skills: {
+                        array_contains: filters.skill
+                    }
+                }),
             },
             orderBy: {
-                createdAt: 'desc'
-            }
-        })
+                matchScore: 'desc',
+            },
+        });
     }
 
     findById(id: number) {

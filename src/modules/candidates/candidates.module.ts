@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { CandidatesController } from './candidates.controller';
 import { CandidatesService } from './candidates.service';
 import { CandidateRepository } from './candidates.repository';
-import { AiService } from './services/ai.services';
+import { AiService } from '../../common/services/ai.services';
 import { SupabaseService } from 'src/common/services/supabase.service';
 
 @Module({
