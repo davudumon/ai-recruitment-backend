@@ -3,7 +3,7 @@ import { CandidatesController } from './candidates.controller';
 import { CandidatesService } from './candidates.service';
 import { CandidateRepository } from './candidates.repository';
 import { AiService } from '../../common/services/ai.services';
-import { SupabaseService } from 'src/common/services/supabase.service';
+import { SupabaseService } from '../../common/services/supabase.service';
 
 @Module({
   controllers: [CandidatesController],
