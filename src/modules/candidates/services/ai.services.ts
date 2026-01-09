@@ -12,16 +12,15 @@ export class AiService {
         this.ai = new GoogleGenAI({ apiKey: apiKey });
     }
 
-    async analyzeCv(filePath: string, jobRequirement: string): Promise<AiAnalysisResult> {
+    async analyzeCv(fileBuffer: Buffer, jobRequirement: string): Promise<AiAnalysisResult> {
         try {
-            const fileBuffer = fs.readFileSync(filePath);
 
             const contents = [
                 {
                     role: 'user',
                     parts: [
                         {
-                            text:`
+                            text: `
                             You are an expert AI Recruitment Assistant.
                             
                             JOB REQUIREMENT:

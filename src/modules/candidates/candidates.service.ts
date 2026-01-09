@@ -1,18 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CandidateRepository } from './candidates.repository';
 import { CreateCandidateDto } from './dto/create-candidates.dto';
-import { cvService } from './services/cv.services';
 import { AiService } from './services/ai.services';
-import { raw } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { SupabaseService } from 'src/common/services/supabase.service';
 
 @Injectable()
 export class CandidatesService {
     constructor(
         private readonly candidateRepo: CandidateRepository,
-        private readonly cvService: cvService,
         private readonly aiService: AiService,
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly supabaseService: SupabaseService,
     ) { }
 
     async create(dto: CreateCandidateDto, file: Express.Multer.File) {
@@ -29,9 +28,9 @@ export class CandidatesService {
         Must Have Skills: ${JSON.stringify(job.required_skills)}
         `;
 
-        const filePath = await this.cvService.uploadCv(file);
+        const filePath = await this.supabaseService.uploadFile(file);
 
-        const ai = await this.aiService.analyzeCv(filePath, jobRequirementText);
+        const ai = await this.aiService.analyzeCv(file.buffer, jobRequirementText);
 
         return this.candidateRepo.create({
             fullName: ai.fullName,
