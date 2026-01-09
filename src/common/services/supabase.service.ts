@@ -31,4 +31,18 @@ export class SupabaseService {
 
         return publicUrlData.publicUrl;
     }
+
+    async deleteFile(fileUrl: string): Promise<void> {
+        const parts = fileUrl.split('/');
+        const fileName = parts[parts.length - 1];
+        const bucket = 'cv';
+
+        const { error } = await this.supabase.storage
+            .from(bucket)
+            .remove([fileName]);
+
+        if (error) {
+            console.error('Failed to delete file from Supabase:', error.message);
+        }
+    }
 }

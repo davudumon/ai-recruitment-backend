@@ -10,8 +10,24 @@ export class JobVacancyRepository {
         return this.prisma.job.create({ data });
     }
 
-    findAll() {
+    findAll(filters: { title?: string } = {}) {
+        const { title } = filters;
+
         return this.prisma.job.findMany({
+            where: {
+                title: title
+                    ? {
+                        contains: title
+                    }
+                    : undefined,
+            },
+            include: {
+                _count: {
+                    select: {
+                        candidates: true,
+                    },
+                },
+            },
             orderBy: { createdAt: 'desc' },
         });
     }

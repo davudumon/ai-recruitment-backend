@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CandidateRepository } from './candidates.repository';
 import { CreateCandidateDto } from './dto/create-candidates.dto';
-import { AiService } from './services/ai.services';
+import { AiService } from '../../common/services/ai.services';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SupabaseService } from 'src/common/services/supabase.service';
 
@@ -48,8 +48,8 @@ export class CandidatesService {
         });
     }
 
-    async findAll() {
-        return this.candidateRepo.findAll();
+    async findAll(filters: { jobId?: number; minScore?: number; skill?: string }) {
+        return this.candidateRepo.findAll(filters);
     }
 
     async findOne(id: number) {
@@ -67,6 +67,10 @@ export class CandidatesService {
 
         if (!candidate) {
             throw new NotFoundException('Candidate not found');
+        }
+
+        if (candidate.cvUrl) {
+            await this.supabaseService.deleteFile(candidate.cvUrl);
         }
 
         return this.candidateRepo.delete(id);
