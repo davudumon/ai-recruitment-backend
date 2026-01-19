@@ -11,8 +11,6 @@ async function bootstrap() {
     .setTitle('Recruitment AI API')
     .setDescription('Dokumentasi API untuk sistem manajemen lowongan dan pelamar berbasis AI')
     .setVersion('1.0')
-    .addTag('jobs')
-    .addTag('candidates')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
