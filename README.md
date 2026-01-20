@@ -318,7 +318,7 @@ Contributions are welcome! Please follow these guidelines:
 
 ## 📄 License
 
-UNLICENSED
+This project is [MIT Licensed](LICENSE).
 
 ---
 
