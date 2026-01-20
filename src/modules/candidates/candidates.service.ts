@@ -4,6 +4,8 @@ import { CreateCandidateDto } from './dto/create-candidates.dto';
 import { AiService } from '../../common/services/ai.services';
 import { PrismaService } from '../../prisma/prisma.service';
 import { SupabaseService } from '../../common/services/supabase.service';
+import * as ExcelJS from 'exceljs';
+import * as express from 'express';
 
 @Injectable()
 export class CandidatesService {
@@ -74,5 +76,44 @@ export class CandidatesService {
         }
 
         return this.candidateRepo.delete(id);
+    }
+
+    async exportToExcel(res: express.Response, filters: any) {
+        const candidates = await this.candidateRepo.findAll(filters);
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Candidates');
+
+        worksheet.columns = [
+            { header: 'No', key: 'no', width: 5 },
+            { header: 'Full Name', key: 'fullName', width: 30 },
+            { header: 'Email', key: 'email', width: 20 },
+            { header: 'Applied Position', key: 'jobTitle', width: 20 },
+            { header: 'Skills', key: 'skills', width: 50 },
+            { header: 'Years of Experience', key: 'yearsOfExperience', width: 20 },
+            { header: 'Match Score', key: 'matchScore', width: 15 },
+        ];
+
+        candidates.forEach((candidate, index) => {
+            worksheet.addRow({
+                no: index + 1,
+                fullName: candidate.fullName,
+                email: candidate.email,
+                jobTitle: candidate.job.title,
+                skills: Array.isArray(candidate.skills)
+                    ? candidate.skills.join(', ')
+                    : (candidate.skills ?? '-'),
+                yearsOfExperience: candidate.yearsOfExperience,
+                matchScore: candidate.matchScore,
+            });
+        });
+
+        const currentTime = Date.now();
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename=candidates-export-${currentTime}.xlsx`);
+
+        await workbook.xlsx.write(res);
+        res.end();
     }
 }

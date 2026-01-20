@@ -1,13 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DashboardService } from './dashboard.service';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
-@ApiTags('dashboard')
+@ApiBearerAuth('access-token')
+@UseGuards(JwtAuthGuard)
 @Controller('dashboard')
 export class DashboardController {
     constructor(private readonly dashboardService: DashboardService) { }
 
     @Get()
+    @ApiOperation({ summary: 'Get dashboard summary data', description: 'Retrieves summary data for the dashboard including total jobs, total candidates, and newest candidates.' })
     async getSummary() {
         const data = await this.dashboardService.getSummary();
 
