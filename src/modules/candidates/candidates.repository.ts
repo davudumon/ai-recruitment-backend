@@ -28,10 +28,15 @@ export class CandidateRepository {
             orderBy: {
                 matchScore: 'desc',
             },
+            include: {
+                job: true
+            }
         });
     }
 
     findById(id: number) {
+        if (isNaN(id)) return null;
+
         return this.prisma.candidate.findUnique({
             where: { id },
             include: {
