@@ -1,98 +1,331 @@
+# AI Recruitment Backend
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  An intelligent AI-powered recruitment system backend built with NestJS that automates candidate evaluation using Google Gemini AI.
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📋 Table of Contents
 
-## Project setup
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [API Endpoints](#api-endpoints)
+- [Database Schema](#database-schema)
+- [Authentication](#authentication)
+- [License](#license)
 
-```bash
-$ npm install
+---
+
+## 🎯 Overview
+
+AI Recruitment Backend is a comprehensive backend solution for managing job vacancies and candidate applications. It uses AI (Google Gemini) to analyze CVs, extract candidate information, and match candidates against job requirements with intelligent scoring and reasoning.
+
+---
+
+## ✨ Features
+
+- **JWT-based Authentication**: Secure user authentication and authorization
+- **AI-Powered CV Analysis**: Automatic parsing and analysis of PDF resumes using Google Gemini
+- **Intelligent Candidate Matching**: Matches candidates against job requirements with match scores
+- **Job Vacancy Management**: Create, update, and manage job postings
+- **Candidate Database**: Store and retrieve candidate information with AI-generated summaries
+- **Dashboard Analytics**: Overview of recruitment metrics and statistics
+- **File Upload Support**: Handle PDF CV uploads with validation
+- **Excel Export**: Export candidate and job data to Excel
+- **API Documentation**: Integrated Swagger/OpenAPI documentation
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework**: NestJS 11.0.1
+- **Runtime**: Node.js
+- **Language**: TypeScript 5.7.3
+- **Database**: MySQL (via Prisma ORM)
+- **Authentication**: JWT with Passport.js
+- **AI Integration**: Google Generative AI (Gemini)
+- **File Storage**: Supabase
+- **Testing**: Jest
+- **API Documentation**: Swagger/OpenAPI
+- **Code Quality**: ESLint, Prettier
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── modules/
+│   ├── auth/                 # Authentication module
+│   │   ├── auth.controller.ts
+│   │   ├── auth.service.ts
+│   │   ├── auth.module.ts
+│   │   └── jwt.strategy.ts
+│   ├── users/                # User management module
+│   ├── candidates/           # Candidate management module
+│   │   ├── candidates.controller.ts
+│   │   ├── candidates.service.ts
+│   │   ├── candidates.repository.ts
+│   │   └── dto/
+│   ├── job-vacancies/        # Job posting management module
+│   │   ├── job-vacancies.controller.ts
+│   │   ├── job-vacancies.service.ts
+│   │   └── dto/
+│   └── dashboard/            # Analytics & dashboard module
+├── common/
+│   ├── guards/               # JWT authentication guards
+│   ├── interceptors/         # Response interceptors
+│   └── services/             # Shared services (AI, Supabase)
+├── prisma/                   # Database module & service
+├── app.module.ts             # Root application module
+├── app.controller.ts
+├── app.service.ts
+└── main.ts                   # Application entry point
+prisma/
+├── schema.prisma             # Database schema
+└── migrations/               # Database migration history
 ```
 
-## Compile and run the project
+---
+
+## 📋 Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- MySQL database
+- Google Cloud Account (for Gemini API)
+- Supabase Account (for file storage)
+
+---
+
+## 🚀 Installation
+
+### 1. Clone the repository
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone <repository-url>
+cd ai-recruitment-backend
 ```
 
-## Run tests
+### 2. Install dependencies
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 3. Generate Prisma Client
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run postinstall
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## ⚙️ Configuration
 
-Check out a few resources that may come in handy when working with NestJS:
+### 1. Environment Variables
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Create a `.env` file in the root directory:
 
-## Support
+```env
+# Database
+DATABASE_URL="mysql://username:password@localhost:3306/recruitment_db"
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# JWT
+JWT_SECRET="your-secret-key"
+JWT_EXPIRATION="24h"
 
-## Stay in touch
+# Google Gemini API
+GOOGLE_API_KEY="your-google-gemini-api-key"
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Supabase
+SUPABASE_URL="your-supabase-url"
+SUPABASE_KEY="your-supabase-key"
+SUPABASE_BUCKET="your-storage-bucket-name"
 
-## License
+# Application
+PORT=3000
+NODE_ENV=development
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 2. Database Setup
+
+Run Prisma migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+---
+
+## 🏃 Running the Application
+
+### Development Mode
+
+```bash
+npm run start:dev
+```
+
+### Watch Mode
+
+```bash
+npm run start:dev
+```
+
+### Debug Mode
+
+```bash
+npm run start:debug
+```
+
+### Production Mode
+
+```bash
+npm run build
+npm run start:prod
+```
+
+---
+
+## 🧪 Testing
+
+### Run all tests
+
+```bash
+npm test
+```
+
+### Watch mode
+
+```bash
+npm run test:watch
+```
+
+### Coverage report
+
+```bash
+npm run test:cov
+```
+
+### E2E tests
+
+```bash
+npm run test:e2e
+```
+
+---
+
+## 🔌 API Endpoints
+
+### Authentication
+- `POST /auth/login` - User login and JWT token generation
+
+### Candidates
+- `POST /candidates` - Upload and analyze candidate CV
+- `GET /candidates` - Get all candidates
+- `GET /candidates/:id` - Get candidate details
+- `DELETE /candidates/:id` - Delete candidate
+
+### Job Vacancies
+- `POST /job-vacancies` - Create job posting
+- `GET /job-vacancies` - Get all job vacancies
+- `GET /job-vacancies/:id` - Get job vacancy details
+- `PUT /job-vacancies/:id` - Update job vacancy
+- `DELETE /job-vacancies/:id` - Delete job vacancy
+
+### Dashboard
+- `GET /dashboard` - Get recruitment analytics and statistics
+
+### Users
+- `GET /users` - Get all users
+- `GET /users/:id` - Get user details
+- `PUT /users/:id` - Update user
+- `DELETE /users/:id` - Delete user
+
+For detailed API documentation, visit `/api` after starting the application.
+
+---
+
+## 💾 Database Schema
+
+### User Model
+- Stores user authentication credentials
+- Fields: id, name, email, password, createdAt, updatedAt
+
+### Job Model
+- Manages job vacancies
+- Fields: id, title, description, location, isActive, required_skills, createdAt, updatedAt
+
+### Candidate Model
+- Stores candidate information and AI analysis results
+- Fields: id, fullName, email, skills, experienceSummary, yearsOfExperience, cvUrl, rawCvText, aiSummary, matchScore, aiReasoning, jobId, createdAt
+
+---
+
+## 🔐 Authentication
+
+The API uses JWT (JSON Web Tokens) for authentication:
+
+1. User logs in via `/auth/login` endpoint
+2. Receives a JWT token in response
+3. Includes token in `Authorization: Bearer <token>` header for protected routes
+4. Token is validated using JWT strategy
+
+Protected endpoints require the `@UseGuards(JwtAuthGuard)` decorator.
+
+---
+
+## 📦 Available Scripts
+
+```bash
+npm run build        # Build the project for production
+npm run format       # Format code with Prettier
+npm start            # Start the application
+npm run start:dev    # Start with file watching
+npm run start:debug  # Start with debugging enabled
+npm run start:prod   # Run production build
+npm run lint         # Run ESLint and fix issues
+npm test             # Run unit tests
+npm run test:watch   # Run tests in watch mode
+npm run test:cov     # Generate coverage report
+npm run test:e2e     # Run end-to-end tests
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Create a feature branch (`git checkout -b feature/your-feature`)
+2. Commit your changes (`git commit -am 'Add some feature'`)
+3. Push to the branch (`git push origin feature/your-feature`)
+4. Create a Pull Request
+
+---
+
+## 📄 License
+
+UNLICENSED
+
+---
+
+## ✉️ Support
+
+For issues, questions, or suggestions, please open an issue in the repository.
+
+---
+
+**Built with ❤️ using NestJS and Gemini AI**
